@@ -59,7 +59,12 @@ const customComponents = {
 
 <template>
   <div v-if="canShowContent">
-    <Content :api-key="apiKey" :model="model" :content="pageContent" />
+    <Content
+      :api-key="apiKey"
+      :model="model"
+      :content="pageContent"
+      :custom-components="customComponents"
+    />
   </div>
   <div v-else-if="refresh">
     <div class="w-full h-dvh flex items-center justify-center">
