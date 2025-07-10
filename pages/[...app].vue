@@ -46,15 +46,15 @@ const canShowContent = computed(() =>
 );
 
 // Define custom components for the visual editor
-const customComponents = {
+const customComponents = [
   HeroSection,
   FeatureCard,
   CTASection,
   TestimonialCard,
   StatsSection,
   CustomHeader,
-  PricingSection,
-};
+  PricingSection
+];
 </script>
 
 <template>
