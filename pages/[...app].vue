@@ -4,15 +4,6 @@
 import { Content, fetchOneEntry, isPreviewing } from "@builder.io/sdk-vue";
 import { ref, computed, watchEffect } from "vue";
 
-// Import all custom components for the visual editor
-import HeroSection from "~/components/builder/HeroSection.vue";
-import FeatureCard from "~/components/builder/FeatureCard.vue";
-import CTASection from "~/components/builder/CTASection.vue";
-import TestimonialCard from "~/components/builder/TestimonialCard.vue";
-import StatsSection from "~/components/builder/StatsSection.vue";
-import CustomHeader from "~/components/builder/CustomHeader.vue";
-import PricingSection from "~/components/builder/PricingSection.vue";
-
 const route = useRoute();
 
 // TO DO: Add your Public API Key here
@@ -44,27 +35,11 @@ watchEffect(() => {
 const canShowContent = computed(() =>
   content.value ? true : isPreviewing(route.path),
 );
-
-// Define custom components for the visual editor
-const customComponents = [
-  HeroSection,
-  FeatureCard,
-  CTASection,
-  TestimonialCard,
-  StatsSection,
-  CustomHeader,
-  PricingSection,
-];
 </script>
 
 <template>
   <div v-if="canShowContent">
-    <Content
-      :api-key="apiKey"
-      :model="model"
-      :content="pageContent"
-      :custom-components="customComponents"
-    />
+    <Content :api-key="apiKey" :model="model" :content="pageContent" />
   </div>
   <div v-else-if="refresh">
     <div class="w-full h-dvh flex items-center justify-center">
