@@ -33,7 +33,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Button } from '@/components/ui/button';
 
 interface Props {
