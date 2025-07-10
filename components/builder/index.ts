@@ -68,4 +68,25 @@ export const componentInfo = {
       "useBuilderNavigation",
     ],
   },
+  PricingSection: {
+    name: "Pricing Section",
+    description:
+      "Complete pricing section with three tiers and customizable features",
+    category: "Landing Page",
+    props: [
+      "showHero",
+      "heroTitle",
+      "backgroundImage",
+      "backgroundColor",
+      "title",
+      "subtitle",
+      "basicTitle",
+      "basicPrice",
+      "proTitle",
+      "proPrice",
+      "enterpriseTitle",
+      "enterprisePrice",
+      "bottomText",
+    ],
+  },
 };
