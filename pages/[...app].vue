@@ -44,6 +44,17 @@ watchEffect(() => {
 const canShowContent = computed(() =>
   content.value ? true : isPreviewing(route.path),
 );
+
+// Define custom components for the visual editor
+const customComponents = {
+  HeroSection,
+  FeatureCard,
+  CTASection,
+  TestimonialCard,
+  StatsSection,
+  CustomHeader,
+  PricingSection,
+};
 </script>
 
 <template>
