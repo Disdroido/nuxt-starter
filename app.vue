@@ -26,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+import LuxuryHeader from "~/components/builder/LuxuryHeader.vue";
 // Event handlers
 const handleInquiry = () => {
   console.log("Inquiry started");

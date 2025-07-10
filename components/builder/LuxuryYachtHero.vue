@@ -72,7 +72,6 @@
                 <option value="Motor">Motor Yacht</option>
                 <option value="Sailing">Sailing Yacht</option>
                 <option value="Catamaran">Catamaran</option>
-                <option value="Superyacht">Superyacht</option>
               </select>
             </div>
             <div class="md:col-span-1">
