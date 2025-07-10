@@ -108,7 +108,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { fetchEntries } from '@builder.io/sdk-vue';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-vue-next';
