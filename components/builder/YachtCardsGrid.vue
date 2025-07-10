@@ -197,6 +197,8 @@ const props = defineProps({
   },
 });
 
+console.log(props.yachts)
+
 const emit = defineEmits(["view-yacht", "inquire-yacht", "load-more"]);
 
 const currentPage = ref(1);

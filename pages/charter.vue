@@ -99,7 +99,7 @@
       <div class="flex justify-between items-center mb-6">
         <div>
           <p class="text-gray-600">
-            {{ isLoading ? "Loading..." : `${yachts.length} yachts found` }}
+            {{ isLoading ? "Loading..." : `${data?.pagination?.total} yachts found` }}
           </p>
         </div>
         <div class="flex items-center space-x-4">
@@ -139,13 +139,13 @@
         <div
           v-for="data in yachts"
           :key="data.yacht.id"
-          class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-          @click="navigateTo(`/yacht/${data.yacht.id}`)"
+          class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
         >
           <!-- Yacht Image -->
-          <div class="relative h-48 overflow-hidden">
+          <div class="relative h-64 overflow-hidden">
             <img
               :src="
+                data.yacht.mainImage ||
                 data.yacht.images?.[0] ||
                 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=2070&auto=format&fit=crop'
               "
@@ -154,89 +154,86 @@
             />
             <!-- Price Badge -->
             <div
-              v-if="data.yacht.charter?.weeklyRates?.[0]"
-              class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full"
+              class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full"
             >
               <span class="text-sm font-medium text-gray-900">
-                €{{
-                  data.yacht.charter.weeklyRates[0].rate.toLocaleString()
-                }}/week
+                {{ formatPrice(data.yacht.currency, data.yacht.price, data.yacht.weeklyPrice) }}
               </span>
             </div>
-            <!-- Type Badge -->
+            <!-- Charter Type -->
             <div
-              class="absolute top-3 left-3 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium"
+              v-if="data.yacht.type"
+              class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium"
             >
-              {{ data.yacht.yachtType || "Motor Yacht" }}
+              {{ data.yacht.type }}
             </div>
           </div>
 
           <!-- Yacht Details -->
           <div class="p-6">
             <h3 class="text-xl font-semibold text-gray-900 mb-2">
-              {{ data.yacht.name || data.yacht.title }}
+              {{ data.yacht.name }}
             </h3>
             <p
-              v-if="data.yacht.location"
+              v-if="data.yacht.flag"
               class="text-gray-600 mb-3 flex items-center"
             >
               <MapPin class="w-4 h-4 mr-1" />
-              {{ data.yacht.location }}
+              {{ data.yacht.flag }}
             </p>
 
             <!-- Yacht Specs -->
             <div class="grid grid-cols-3 gap-4 mb-4 text-sm text-gray-600">
-              <div v-if="data.yacht.specifications?.length" class="text-center">
-                <div class="font-medium text-gray-900">
-                  {{ data.yacht.specifications.length }}m
-                </div>
+              <div v-if="data.yacht.lengthMeters" class="text-center">
+                <div class="font-medium text-gray-900">{{ data.yacht.lengthMeters }}m</div>
                 <div>Length</div>
               </div>
-              <div
-                v-if="
-                  data.yacht.specifications?.maxGuests ||
-                  data.yacht.specifications?.guests
-                "
-                class="text-center"
-              >
-                <div class="font-medium text-gray-900">
-                  {{
-                    data.yacht.specifications.maxGuests ||
-                    data.yacht.specifications.guests
-                  }}
-                </div>
+              <div v-if="data.yacht.sleeps" class="text-center">
+                <div class="font-medium text-gray-900">{{ data.yacht.sleeps }}</div>
                 <div>Guests</div>
               </div>
-              <div v-if="data.yacht.specifications?.cabins" class="text-center">
-                <div class="font-medium text-gray-900">
-                  {{ data.yacht.specifications.cabins }}
-                </div>
+              <div v-if="data.yacht.cabins" class="text-center">
+                <div class="font-medium text-gray-900">{{ data.yacht.cabins }}</div>
                 <div>Cabins</div>
               </div>
             </div>
 
             <!-- Features -->
-            <div
-              v-if="data.yacht.amenities && data.yacht.amenities.length"
-              class="mb-4"
-            >
+            <div v-if="data.yacht?.termToysAndTender && data.yacht?.termToysAndTender?.length" class="mb-4">
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="amenity in data.yacht.amenities.slice(0, 3)"
-                  :key="amenity"
+                  v-for="(toy, index) in (data.yacht?.termToysAndTender || [])
+                    .filter(toy => toy && typeof toy === 'string')
+                    .map(toy => toy.split('::'))
+                    .filter(([first]) => first && first !== 'Tender' && first !== 'Tenders')
+                    .map(([_, second]) => second)
+                    .slice(0, 3)"
+                  :key="index"
                   class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs"
                 >
-                  {{ amenity }}
+                  {{ toy }}
                 </span>
               </div>
             </div>
 
-            <!-- Action Button -->
-            <Button
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors"
-            >
-              View Details
-            </Button>
+            <!-- Actions -->
+            <div class="flex gap-3">
+              <Button
+                asChild
+                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors"
+              >
+                <NuxtLink :to="`/yacht/${data.yacht.id}`">
+                  View Details
+                </NuxtLink>
+              </Button>
+              <!-- <Button
+                @click="$emit('inquire-yacht', data.yacht)"
+                variant="outline"
+                class="px-4 py-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                <Heart class="w-4 h-4" />
+              </Button> -->
+            </div>
           </div>
         </div>
       </div>
@@ -256,7 +253,7 @@
       >
         <Button
           @click="searchParams.page > 1 && changePage(searchParams.page - 1)"
-          :disabled="searchParams.page <= 1"
+          :disabled="!data?.pagination.hasPrev"
           variant="outline"
           class="px-4 py-2"
         >
@@ -265,7 +262,7 @@
         <span class="text-gray-600">Page {{ searchParams.page }}</span>
         <Button
           @click="changePage(searchParams.page + 1)"
-          :disabled="yachts.length < searchParams.limit"
+          :disabled="!data?.pagination.hasNext"
           variant="outline"
           class="px-4 py-2"
         >
@@ -285,6 +282,7 @@ import { MapPin } from "lucide-vue-next";
 const searchParams = reactive({
   page: 1,
   limit: 20,
+  total: 0,
   dataType: "charter",
   search: "",
   location: "",
@@ -365,6 +363,17 @@ watchEffect(() => {
   }
 });
 
+const formatPrice = (currency, price, weeklyPrice) => {
+  if (!price && !weeklyPrice) return "Price on request";
+  if (price !== null && typeof price === 'number') {
+    return `${currency} ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+  }
+  if (weeklyPrice && typeof weeklyPrice === 'string') {
+    return `${currency !== 'unknown' ? currency : 'AUD'} ${weeklyPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/week`;
+  }
+  return "Price on request";
+};
+
 // Update search function
 const updateSearch = async () => {
   const params = new URLSearchParams();
@@ -384,6 +393,7 @@ const updateSearch = async () => {
 
 // Change page
 const changePage = (newPage: number) => {
+  console.log(searchParams.page)
   searchParams.page = newPage;
   updateSearch();
 };
