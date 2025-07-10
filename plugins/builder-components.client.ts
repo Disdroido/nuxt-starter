@@ -7,10 +7,11 @@ import CTASection from "~/components/builder/CTASection.vue";
 import TestimonialCard from "~/components/builder/TestimonialCard.vue";
 import StatsSection from "~/components/builder/StatsSection.vue";
 import CustomHeader from "~/components/builder/CustomHeader.vue";
+import PricingSection from "~/components/builder/PricingSection.vue";
 
 export default defineNuxtPlugin(() => {
   // Register Hero Section
-  register('HeroSection', {
+  register("HeroSection", {
     name: "Hero Section",
     inputs: [
       {
@@ -44,7 +45,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Feature Card
-  register('FeatureCard', {
+  register("FeatureCard", {
     name: "Feature Card",
     inputs: [
       {
@@ -73,7 +74,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register CTA Section
-  register('CTASection', {
+  register("CTASection", {
     name: "CTA Section",
     inputs: [
       {
@@ -107,7 +108,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Testimonial Card
-  register('TestimonialCard', {
+  register("TestimonialCard", {
     name: "Testimonial Card",
     inputs: [
       {
@@ -143,7 +144,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Stats Section
-  register('StatsSection', {
+  register("StatsSection", {
     name: "Stats Section",
     inputs: [
       {
@@ -213,7 +214,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Custom Header
-  register('CustomHeader', {
+  register("CustomHeader", {
     name: "Custom Header",
     inputs: [
       {
