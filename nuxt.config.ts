@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   devtools: { enabled: true },
   compatibilityDate: "2024-07-06",
-  modules: ["@builder.io/sdk-vue/nuxt", "shadcn-nuxt"],
+  modules: ["shadcn-nuxt"],
   builder: {
     publicKey: "25becc87cdbf4edab9eccb09d448af92",
     models: ["page", "nav-link"],
