@@ -5,6 +5,7 @@ export { default as CTASection } from "./CTASection.vue";
 export { default as TestimonialCard } from "./TestimonialCard.vue";
 export { default as StatsSection } from "./StatsSection.vue";
 export { default as CustomHeader } from "./CustomHeader.vue";
+export { default as PricingSection } from "./PricingSection.vue";
 
 // Component descriptions for documentation
 export const componentInfo = {
