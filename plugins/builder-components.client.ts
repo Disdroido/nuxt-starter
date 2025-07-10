@@ -1,4 +1,4 @@
-import { Builder } from "@builder.io/sdk-vue";
+import { register } from "@builder.io/sdk-vue";
 
 // Import all custom components
 import HeroSection from "~/components/builder/HeroSection.vue";
@@ -10,7 +10,7 @@ import CustomHeader from "~/components/builder/CustomHeader.vue";
 
 export default defineNuxtPlugin(() => {
   // Register Hero Section
-  Builder.registerComponent(HeroSection, {
+  register(HeroSection, {
     name: "Hero Section",
     inputs: [
       {
@@ -44,7 +44,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Feature Card
-  Builder.registerComponent(FeatureCard, {
+  register(FeatureCard, {
     name: "Feature Card",
     inputs: [
       {
@@ -73,7 +73,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register CTA Section
-  Builder.registerComponent(CTASection, {
+  register(CTASection, {
     name: "CTA Section",
     inputs: [
       {
@@ -107,7 +107,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Testimonial Card
-  Builder.registerComponent(TestimonialCard, {
+  register(TestimonialCard, {
     name: "Testimonial Card",
     inputs: [
       {
@@ -143,7 +143,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Stats Section
-  Builder.registerComponent(StatsSection, {
+  register(StatsSection, {
     name: "Stats Section",
     inputs: [
       {
@@ -213,7 +213,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Custom Header
-  Builder.registerComponent(CustomHeader, {
+  register(CustomHeader, {
     name: "Custom Header",
     inputs: [
       {
