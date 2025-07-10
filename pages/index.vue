@@ -8,7 +8,7 @@
       :custom-nav-links="[
         { label: 'Charter', url: '/charter' },
         { label: 'Destinations', url: '/destinations' },
-        { label: 'Yachts', url: '/yachts' },
+        { label: 'Yachts', url: '/charter' },
         { label: 'About', url: '/about' },
         { label: 'Contact', url: '/contact' },
       ]"
