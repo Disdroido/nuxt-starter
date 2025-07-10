@@ -1,8 +1,17 @@
 import { register } from "@builder.io/sdk-vue";
 
+// Import all custom components
+import HeroSection from "~/components/builder/HeroSection.vue";
+import FeatureCard from "~/components/builder/FeatureCard.vue";
+import CTASection from "~/components/builder/CTASection.vue";
+import TestimonialCard from "~/components/builder/TestimonialCard.vue";
+import StatsSection from "~/components/builder/StatsSection.vue";
+import CustomHeader from "~/components/builder/CustomHeader.vue";
+import PricingSection from "~/components/builder/PricingSection.vue";
+
 export default defineNuxtPlugin(() => {
   // Register Hero Section
-  register('HeroSection', {
+  register("HeroSection", {
     name: "Hero Section",
     inputs: [
       {
@@ -36,7 +45,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Feature Card
-  register('FeatureCard', {
+  register("FeatureCard", {
     name: "Feature Card",
     inputs: [
       {
@@ -65,7 +74,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register CTA Section
-  register('CTASection', {
+  register("CTASection", {
     name: "CTA Section",
     inputs: [
       {
@@ -99,7 +108,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Testimonial Card
-  register('TestimonialCard', {
+  register("TestimonialCard", {
     name: "Testimonial Card",
     inputs: [
       {
@@ -135,7 +144,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Stats Section
-  register('StatsSection', {
+  register("StatsSection", {
     name: "Stats Section",
     inputs: [
       {
@@ -205,7 +214,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Custom Header
-  register('CustomHeader', {
+  register("CustomHeader", {
     name: "Custom Header",
     inputs: [
       {
@@ -266,5 +275,231 @@ export default defineNuxtPlugin(() => {
     ],
     image:
       "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4f6a8b9c1d3e5f7a9b1c2d3e4f5a6b78",
+  });
+
+  // Register Pricing Section
+  register("PricingSection", {
+    name: "Pricing Section",
+    inputs: [
+      // Hero Section
+      {
+        name: "showHero",
+        type: "boolean",
+        defaultValue: false,
+        helperText: "Show hero section at the top",
+      },
+      {
+        name: "heroTitle",
+        type: "string",
+        defaultValue: "THE HERO",
+        helperText: "Hero section title",
+      },
+      {
+        name: "backgroundImage",
+        type: "file",
+        allowedFileTypes: ["jpeg", "jpg", "png", "svg"],
+        helperText: "Background image URL",
+      },
+      {
+        name: "backgroundColor",
+        type: "color",
+        defaultValue: "#f8f9fa",
+        helperText: "Background color if no image",
+      },
+
+      // Header
+      {
+        name: "title",
+        type: "string",
+        defaultValue: "Choose Your Plan",
+        helperText: "Main section title",
+      },
+      {
+        name: "subtitle",
+        type: "longText",
+        defaultValue:
+          "Select the perfect plan for your needs. Upgrade or downgrade at any time.",
+        helperText: "Section subtitle",
+      },
+
+      // Basic Plan
+      {
+        name: "basicTitle",
+        type: "string",
+        defaultValue: "Basic",
+        helperText: "Basic plan title",
+      },
+      {
+        name: "basicDescription",
+        type: "string",
+        defaultValue: "Perfect for getting started",
+        helperText: "Basic plan description",
+      },
+      {
+        name: "basicPrice",
+        type: "string",
+        defaultValue: "9",
+        helperText: "Basic plan price (numbers only)",
+      },
+      {
+        name: "basicFeature1",
+        type: "string",
+        defaultValue: "Up to 5 projects",
+        helperText: "Basic plan feature 1",
+      },
+      {
+        name: "basicFeature2",
+        type: "string",
+        defaultValue: "Basic support",
+        helperText: "Basic plan feature 2",
+      },
+      {
+        name: "basicFeature3",
+        type: "string",
+        defaultValue: "1GB storage",
+        helperText: "Basic plan feature 3",
+      },
+      {
+        name: "basicFeature4",
+        type: "string",
+        defaultValue: "Email support",
+        helperText: "Basic plan feature 4",
+      },
+      {
+        name: "basicButtonText",
+        type: "string",
+        defaultValue: "Get Started",
+        helperText: "Basic plan button text",
+      },
+
+      // Pro Plan
+      {
+        name: "popularBadge",
+        type: "string",
+        defaultValue: "Most Popular",
+        helperText: "Popular badge text",
+      },
+      {
+        name: "proTitle",
+        type: "string",
+        defaultValue: "Pro",
+        helperText: "Pro plan title",
+      },
+      {
+        name: "proDescription",
+        type: "string",
+        defaultValue: "Best for growing businesses",
+        helperText: "Pro plan description",
+      },
+      {
+        name: "proPrice",
+        type: "string",
+        defaultValue: "29",
+        helperText: "Pro plan price (numbers only)",
+      },
+      {
+        name: "proFeature1",
+        type: "string",
+        defaultValue: "Unlimited projects",
+        helperText: "Pro plan feature 1",
+      },
+      {
+        name: "proFeature2",
+        type: "string",
+        defaultValue: "Priority support",
+        helperText: "Pro plan feature 2",
+      },
+      {
+        name: "proFeature3",
+        type: "string",
+        defaultValue: "100GB storage",
+        helperText: "Pro plan feature 3",
+      },
+      {
+        name: "proFeature4",
+        type: "string",
+        defaultValue: "Advanced analytics",
+        helperText: "Pro plan feature 4",
+      },
+      {
+        name: "proFeature5",
+        type: "string",
+        defaultValue: "Team collaboration",
+        helperText: "Pro plan feature 5",
+      },
+      {
+        name: "proButtonText",
+        type: "string",
+        defaultValue: "Start Free Trial",
+        helperText: "Pro plan button text",
+      },
+
+      // Enterprise Plan
+      {
+        name: "enterpriseTitle",
+        type: "string",
+        defaultValue: "Enterprise",
+        helperText: "Enterprise plan title",
+      },
+      {
+        name: "enterpriseDescription",
+        type: "string",
+        defaultValue: "For large organizations",
+        helperText: "Enterprise plan description",
+      },
+      {
+        name: "enterprisePrice",
+        type: "string",
+        defaultValue: "99",
+        helperText: "Enterprise plan price (numbers only)",
+      },
+      {
+        name: "enterpriseFeature1",
+        type: "string",
+        defaultValue: "Everything in Pro",
+        helperText: "Enterprise plan feature 1",
+      },
+      {
+        name: "enterpriseFeature2",
+        type: "string",
+        defaultValue: "Dedicated support",
+        helperText: "Enterprise plan feature 2",
+      },
+      {
+        name: "enterpriseFeature3",
+        type: "string",
+        defaultValue: "Unlimited storage",
+        helperText: "Enterprise plan feature 3",
+      },
+      {
+        name: "enterpriseFeature4",
+        type: "string",
+        defaultValue: "Custom integrations",
+        helperText: "Enterprise plan feature 4",
+      },
+      {
+        name: "enterpriseFeature5",
+        type: "string",
+        defaultValue: "SLA guarantee",
+        helperText: "Enterprise plan feature 5",
+      },
+      {
+        name: "enterpriseButtonText",
+        type: "string",
+        defaultValue: "Contact Sales",
+        helperText: "Enterprise plan button text",
+      },
+
+      // Bottom
+      {
+        name: "bottomText",
+        type: "longText",
+        defaultValue:
+          "All plans include a 14-day free trial. No credit card required.",
+        helperText: "Bottom section text",
+      },
+    ],
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5f7a9b1c3d5e7f9a1b2c3d4e5f6a7b89",
   });
 });
