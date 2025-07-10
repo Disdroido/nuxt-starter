@@ -63,11 +63,9 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+defineProps<{
   title?: string;
   description?: string;
-  icon?: 'rocket' | 'shield' | 'star';
-}
-
-defineProps<Props>();
+  icon?: "rocket" | "shield" | "star";
+}>();
 </script>
