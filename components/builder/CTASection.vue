@@ -27,14 +27,12 @@
 </template>
 
 <script setup lang="ts">
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
-interface Props {
+defineProps<{
   title?: string;
   subtitle?: string;
   primaryButtonText?: string;
   secondaryButtonText?: string;
-}
-
-defineProps<Props>();
+}>();
 </script>
