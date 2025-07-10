@@ -13,6 +13,13 @@ import StatsSection from "~/components/builder/StatsSection.vue";
 import CustomHeader from "~/components/builder/CustomHeader.vue";
 import PricingSection from "~/components/builder/PricingSection.vue";
 
+// Import luxury yacht charter components
+import LuxuryYachtHero from "~/components/builder/LuxuryYachtHero.vue";
+import YachtCardsGrid from "~/components/builder/YachtCardsGrid.vue";
+import DestinationsShowcase from "~/components/builder/DestinationsShowcase.vue";
+import LuxuryTestimonials from "~/components/builder/LuxuryTestimonials.vue";
+import LuxuryHeader from "~/components/builder/LuxuryHeader.vue";
+
 const route = useRoute();
 
 // TO DO: Add your Public API Key here
@@ -532,6 +539,157 @@ const customComponents = [
     ],
     image:
       "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5f7a9b1c3d5e7f9a1b2c3d4e5f6a7b89",
+  },
+
+  // Luxury Yacht Charter Components
+  {
+    component: LuxuryYachtHero,
+    name: "Luxury Yacht Hero",
+    inputs: [
+      {
+        name: "title",
+        type: "string",
+        defaultValue: "Paradise awaits",
+        helperText: "Main hero headline",
+      },
+      {
+        name: "subtitle",
+        type: "longText",
+        defaultValue: "Discover the world's most exclusive yacht charters",
+        helperText: "Hero subtitle text",
+      },
+      {
+        name: "backgroundImage",
+        type: "file",
+        allowedFileTypes: ["jpeg", "jpg", "png"],
+        helperText: "Hero background image",
+      },
+      {
+        name: "showSearchForm",
+        type: "boolean",
+        defaultValue: true,
+        helperText: "Show yacht search form",
+      },
+      {
+        name: "primaryButtonText",
+        type: "string",
+        defaultValue: "Explore Yachts",
+        helperText: "Primary button text",
+      },
+      {
+        name: "secondaryButtonText",
+        type: "string",
+        defaultValue: "View Destinations",
+        helperText: "Secondary button text",
+      },
+    ],
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    component: YachtCardsGrid,
+    name: "Yacht Cards Grid",
+    inputs: [
+      {
+        name: "title",
+        type: "string",
+        defaultValue: "Featured Yacht Charters",
+        helperText: "Section title",
+      },
+      {
+        name: "subtitle",
+        type: "longText",
+        defaultValue: "Discover our handpicked selection of luxury yachts",
+        helperText: "Section subtitle",
+      },
+      {
+        name: "itemsPerPage",
+        type: "number",
+        defaultValue: 6,
+        helperText: "Number of yachts to show initially",
+      },
+    ],
+    image:
+      "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    component: DestinationsShowcase,
+    name: "Destinations Showcase",
+    inputs: [
+      {
+        name: "title",
+        type: "string",
+        defaultValue: "Discover Destinations",
+        helperText: "Section title",
+      },
+      {
+        name: "subtitle",
+        type: "longText",
+        defaultValue: "Explore the world's most beautiful charter destinations",
+        helperText: "Section subtitle",
+      },
+    ],
+    image:
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    component: LuxuryTestimonials,
+    name: "Luxury Testimonials",
+    inputs: [
+      {
+        name: "title",
+        type: "string",
+        defaultValue: "What Our Clients Say",
+        helperText: "Section title",
+      },
+      {
+        name: "subtitle",
+        type: "longText",
+        defaultValue: "Discover why discerning travelers choose us",
+        helperText: "Section subtitle",
+      },
+    ],
+    image:
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    component: LuxuryHeader,
+    name: "Luxury Header",
+    inputs: [
+      {
+        name: "logoUrl",
+        type: "file",
+        allowedFileTypes: ["jpeg", "jpg", "png", "svg"],
+        defaultValue: "https://ahoyclub.com/logo/ahoy-club-logo-dark.svg",
+        helperText: "Company logo",
+      },
+      {
+        name: "companyName",
+        type: "string",
+        defaultValue: "Yacht Charter Exclusive",
+        helperText: "Company name",
+      },
+      {
+        name: "tagline",
+        type: "string",
+        defaultValue: "Luxury Yacht Charters",
+        helperText: "Company tagline",
+      },
+      {
+        name: "phoneNumber",
+        type: "string",
+        defaultValue: "+33 4 93 95 45 45",
+        helperText: "Contact phone number",
+      },
+      {
+        name: "inquireButtonText",
+        type: "string",
+        defaultValue: "Start Charter",
+        helperText: "Inquiry button text",
+      },
+    ],
+    image:
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=400&auto=format&fit=crop",
   },
 ];
 </script>
