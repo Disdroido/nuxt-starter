@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   compatibilityDate: "2024-07-06",
   modules: ["shadcn-nuxt", "@builder.io/sdk-vue/nuxt"],
   builder: {
