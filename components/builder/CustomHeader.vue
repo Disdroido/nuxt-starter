@@ -109,28 +109,29 @@
 </template>
 
 <script setup lang="ts">
-import { fetchEntries } from '@builder.io/sdk-vue';
-import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-vue-next';
+import { fetchEntries } from "@builder.io/sdk-vue";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-vue-next";
 
-interface Props {
-  logoUrl?: string;
-  logoAlt?: string;
-  companyName?: string;
-  showCompanyName?: boolean;
-  showLoginButton?: boolean;
-  showSignupButton?: boolean;
-  loginButtonText?: string;
-  signupButtonText?: string;
-  useBuilderNavigation?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  showCompanyName: false,
-  showLoginButton: true,
-  showSignupButton: true,
-  useBuilderNavigation: true,
-});
+const props = withDefaults(
+  defineProps<{
+    logoUrl?: string;
+    logoAlt?: string;
+    companyName?: string;
+    showCompanyName?: boolean;
+    showLoginButton?: boolean;
+    showSignupButton?: boolean;
+    loginButtonText?: string;
+    signupButtonText?: string;
+    useBuilderNavigation?: boolean;
+  }>(),
+  {
+    showCompanyName: false,
+    showLoginButton: true,
+    showSignupButton: true,
+    useBuilderNavigation: true,
+  },
+);
 
 const route = useRoute();
 const showMobileMenu = ref(false);
@@ -138,19 +139,19 @@ const navigationLinks = ref([]);
 
 // Default navigation links if not using Builder.io
 const defaultLinks = [
-  { id: '1', label: 'Home', url: '/' },
-  { id: '2', label: 'About', url: '/about' },
-  { id: '3', label: 'Services', url: '/services' },
-  { id: '4', label: 'Contact', url: '/contact' },
+  { id: "1", label: "Home", url: "/" },
+  { id: "2", label: "About", url: "/about" },
+  { id: "3", label: "Services", url: "/services" },
+  { id: "4", label: "Contact", url: "/contact" },
 ];
 
 // Fetch navigation from Builder.io or use default
 if (props.useBuilderNavigation) {
-  const { data: navLinks } = await useAsyncData('builderNavLinks', () =>
+  const { data: navLinks } = await useAsyncData("builderNavLinks", () =>
     fetchEntries({
-      model: 'nav-link',
-      apiKey: '25becc87cdbf4edab9eccb09d448af92',
-    })
+      model: "nav-link",
+      apiKey: "25becc87cdbf4edab9eccb09d448af92",
+    }),
   );
   navigationLinks.value = navLinks.value || defaultLinks;
 } else {
@@ -160,7 +161,7 @@ if (props.useBuilderNavigation) {
 // Check if link is active
 const isActiveLink = (url: string) => {
   if (!url) return false;
-  return route.path === url || (url !== '/' && route.path.startsWith(url));
+  return route.path === url || (url !== "/" && route.path.startsWith(url));
 };
 
 // Close mobile menu on route change
@@ -168,6 +169,6 @@ watch(
   () => route.path,
   () => {
     showMobileMenu.value = false;
-  }
+  },
 );
 </script>
