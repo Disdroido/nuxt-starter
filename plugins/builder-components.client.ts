@@ -45,7 +45,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Feature Card
-  register("FeatureCard", {
+  Builder.registerComponent(FeatureCard, {
     name: "Feature Card",
     inputs: [
       {
@@ -74,7 +74,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register CTA Section
-  register("CTASection", {
+  Builder.registerComponent(CTASection, {
     name: "CTA Section",
     inputs: [
       {
@@ -108,7 +108,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Testimonial Card
-  register("TestimonialCard", {
+  Builder.registerComponent(TestimonialCard, {
     name: "Testimonial Card",
     inputs: [
       {
@@ -144,7 +144,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Stats Section
-  register("StatsSection", {
+  Builder.registerComponent(StatsSection, {
     name: "Stats Section",
     inputs: [
       {
@@ -214,7 +214,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Custom Header
-  register("CustomHeader", {
+  Builder.registerComponent(CustomHeader, {
     name: "Custom Header",
     inputs: [
       {
@@ -278,7 +278,7 @@ export default defineNuxtPlugin(() => {
   });
 
   // Register Pricing Section
-  register("PricingSection", {
+  Builder.registerComponent(PricingSection, {
     name: "Pricing Section",
     inputs: [
       // Hero Section
