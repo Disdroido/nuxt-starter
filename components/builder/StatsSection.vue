@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+defineProps<{
   title?: string;
   subtitle?: string;
   stat1Number?: string;
@@ -58,7 +58,5 @@ interface Props {
   stat3Label?: string;
   stat4Number?: string;
   stat4Label?: string;
-}
-
-defineProps<Props>();
+}>();
 </script>
