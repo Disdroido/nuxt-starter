@@ -12,7 +12,7 @@
         { label: 'About', url: '/about' },
         { label: 'Contact', url: '/contact' },
       ]"
-      :use-builder-navigation="false"
+      :use-builder-navigation="true"
       @inquire="handleInquiry"
     />
 
@@ -70,8 +70,37 @@ import DestinationsShowcase from "~/components/builder/DestinationsShowcase.vue"
 import LuxuryTestimonials from "~/components/builder/LuxuryTestimonials.vue";
 import CTASection from "~/components/builder/CTASection.vue";
 
-// Featured yachts data
-const featuredYachts = ref([
+// Fetch featured yachts from API
+const { data: featuredYachtsData, pending: isLoadingYachts } = await useAsyncData(
+  'featuredYachts',
+  () => $fetch('https://ahoy-boats-api.ahoyclub.workers.dev/api/v1/yachts/featured'),
+  { immediate: true }
+)
+
+// Transform API data to component format
+const featuredYachts = computed(() => {
+  if (!featuredYachtsData.value?.data) return fallbackYachts.value
+
+  return featuredYachtsData.value.data.map((item: any) => {
+    const yacht = item.yacht
+    return {
+      id: yacht.id,
+      name: yacht.name || yacht.title,
+      location: yacht.location || 'Mediterranean',
+      price: yacht.charter?.weeklyRates?.[0]?.rate ? `€${yacht.charter.weeklyRates[0].rate.toLocaleString()}` : 'Price on request',
+      weeklyRate: yacht.charter?.weeklyRates?.[0]?.rate ? `€${yacht.charter.weeklyRates[0].rate.toLocaleString()}/week` : 'Price on request',
+      length: yacht.specifications?.length || '50',
+      guests: yacht.specifications?.maxGuests || yacht.specifications?.guests || '12',
+      cabins: yacht.specifications?.cabins || '6',
+      type: yacht.yachtType || 'Motor Yacht',
+      mainImage: yacht.images?.[0] || 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=2070&auto=format&fit=crop',
+      features: yacht.amenities?.slice(0, 4) || ['Luxury Interior', 'Professional Crew', 'Water Toys', 'WiFi']
+    }
+  })
+})
+
+// Fallback featured yachts data in case API fails
+const fallbackYachts = ref([
   {
     id: 1,
     name: "Ocean Majesty",
