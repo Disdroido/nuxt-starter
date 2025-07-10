@@ -44,12 +44,10 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+defineProps<{
   quote?: string;
   name?: string;
   title?: string;
   avatar?: string;
-}
-
-defineProps<Props>();
+}>();
 </script>
