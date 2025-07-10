@@ -1,4 +1,4 @@
-import { register } from "@builder.io/sdk-vue";
+import { Builder } from "@builder.io/sdk-vue";
 
 // Import all custom components
 import HeroSection from "~/components/builder/HeroSection.vue";
