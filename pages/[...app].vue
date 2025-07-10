@@ -3,6 +3,7 @@
 <script setup>
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { ref, computed, watchEffect } from 'vue';
+import { FeatureCard } from '~/components/builder';
 
 const route = useRoute();
 
@@ -37,7 +38,7 @@ const canShowContent = computed(() =>
 
 <template>
   <div v-if="canShowContent">
-    <Content :api-key="apiKey" :model="model" :content="pageContent" />
+    <Content :api-key="apiKey" :model="model" :content="pageContent" :custom-components="[ FeatureCard ]" />
   </div>
   <div v-else-if="refresh">
     <div class="w-full h-dvh flex items-center justify-center">

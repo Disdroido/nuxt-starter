@@ -1,13 +1,5 @@
 import { register } from "@builder.io/sdk-vue";
 
-// Import all custom components
-import HeroSection from "~/components/builder/HeroSection.vue";
-import FeatureCard from "~/components/builder/FeatureCard.vue";
-import CTASection from "~/components/builder/CTASection.vue";
-import TestimonialCard from "~/components/builder/TestimonialCard.vue";
-import StatsSection from "~/components/builder/StatsSection.vue";
-import CustomHeader from "~/components/builder/CustomHeader.vue";
-
 export default defineNuxtPlugin(() => {
   // Register Hero Section
   register('HeroSection', {
