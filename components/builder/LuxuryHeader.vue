@@ -5,17 +5,7 @@
         <!-- Logo -->
         <div class="flex items-center">
           <NuxtLink to="/" class="flex items-center space-x-3">
-            <img :src="logoUrl" :alt="logoAlt" class="h-12 w-auto" />
-            <div v-if="showCompanyName" class="flex flex-col">
-              <span class="text-xl font-light text-gray-900">{{
-                companyName
-              }}</span>
-              <span
-                v-if="tagline"
-                class="text-xs text-gray-500 uppercase tracking-wide"
-                >{{ tagline }}</span
-              >
-            </div>
+            <img :src="logoUrl" :alt="logoAlt" class="h-6 w-auto" />
           </NuxtLink>
         </div>
 

@@ -1,21 +1,5 @@
 <template>
   <div>
-    <!-- Luxury Header -->
-    <LuxuryHeader
-      company-name="Yacht Charter Exclusive"
-      tagline="Luxury Yacht Charters"
-      phone-number="+33 4 93 95 45 45"
-      :custom-nav-links="[
-        { label: 'Charter', url: '/charter' },
-        { label: 'Destinations', url: '/destinations' },
-        { label: 'Yachts', url: '/charter' },
-        { label: 'About', url: '/about' },
-        { label: 'Contact', url: '/contact' },
-      ]"
-      :use-builder-navigation="true"
-      @inquire="handleInquiry"
-    />
-
     <!-- Hero Section -->
     <LuxuryYachtHero
       title="Paradise awaits"
@@ -62,8 +46,7 @@
   </div>
 </template>
 
-<script setup>
-import LuxuryHeader from "~/components/builder/LuxuryHeader.vue";
+<script setup lang="ts">
 import LuxuryYachtHero from "~/components/builder/LuxuryYachtHero.vue";
 import YachtCardsGrid from "~/components/builder/YachtCardsGrid.vue";
 import DestinationsShowcase from "~/components/builder/DestinationsShowcase.vue";
@@ -79,22 +62,28 @@ const { data: featuredYachtsData, pending: isLoadingYachts } = await useAsyncDat
 
 // Transform API data to component format
 const featuredYachts = computed(() => {
-  if (!featuredYachtsData.value?.data) return fallbackYachts.value
+  if (!featuredYachtsData.value?.data) return fallbackYachts.value;
 
-  return featuredYachtsData.value.data.map((item: any) => {
-    const yacht = item.yacht
+  return featuredYachtsData.value.data.map((item) => {
+    const yacht = item.yacht || {}
     return {
-      id: yacht.id,
-      name: yacht.name || yacht.title,
+      id: yacht.id || '',
+      name: yacht.name || yacht.title || '',
       location: yacht.location || 'Mediterranean',
-      price: yacht.charter?.weeklyRates?.[0]?.rate ? `€${yacht.charter.weeklyRates[0].rate.toLocaleString()}` : 'Price on request',
-      weeklyRate: yacht.charter?.weeklyRates?.[0]?.rate ? `€${yacht.charter.weeklyRates[0].rate.toLocaleString()}/week` : 'Price on request',
-      length: yacht.specifications?.length || '50',
-      guests: yacht.specifications?.maxGuests || yacht.specifications?.guests || '12',
-      cabins: yacht.specifications?.cabins || '6',
+      price: yacht.charter?.weeklyRates?.[0]?.rate 
+        ? `€${Number(yacht.charter.weeklyRates[0].rate).toLocaleString()}` 
+        : 'Price on request',
+      weeklyRate: yacht.charter?.weeklyRates?.[0]?.rate
+        ? `€${Number(yacht.charter.weeklyRates[0].rate).toLocaleString()}/week`
+        : 'Price on request',
+      length: yacht.specifications?.length?.toString() || '50',
+      guests: (yacht.specifications?.maxGuests || yacht.specifications?.guests || '12').toString(),
+      cabins: yacht.specifications?.cabins?.toString() || '6',
       type: yacht.yachtType || 'Motor Yacht',
       mainImage: yacht.images?.[0] || 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=2070&auto=format&fit=crop',
-      features: yacht.amenities?.slice(0, 4) || ['Luxury Interior', 'Professional Crew', 'Water Toys', 'WiFi']
+      features: Array.isArray(yacht.amenities) 
+        ? yacht.amenities.slice(0, 4)
+        : ['Luxury Interior', 'Professional Crew', 'Water Toys', 'WiFi']
     }
   })
 })
@@ -284,12 +273,6 @@ const clientStats = ref({
   repeatClients: "85",
   experience: "15",
 });
-
-// Event handlers
-const handleInquiry = () => {
-  console.log("Inquiry started");
-  // Handle inquiry logic
-};
 
 const viewYachtDetails = (yacht) => {
   console.log("View yacht:", yacht);
