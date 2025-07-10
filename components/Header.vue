@@ -23,6 +23,17 @@
             {{ link.data.label }}
           </NuxtLink>
         </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center">
+          <Button
+            @click="showMobileMenu = !showMobileMenu"
+            variant="link"
+            class=""
+          >
+            <Menu class="size-6" />
+          </Button>
+        </div>
       </div>
     </div>
 
@@ -49,7 +60,6 @@
               }"
               @click="showMobileMenu = false"
             >
-              <LayoutDashboard class="w-5 h-5 flex-shrink-0" />
               <span>{{ link.data.label }}</span>
             </NuxtLink>
           </nav>
@@ -61,8 +71,12 @@
 
 <script setup>
 import { fetchEntries } from '@builder.io/sdk-vue';
+import {
+  Menu,
+} from "lucide-vue-next";
 
 const links = ref([]);
+const showMobileMenu = ref(false);
 
 const { data: navLinks } = await useAsyncData('builderDataNavLinks', () =>
   fetchEntries({
@@ -72,4 +86,13 @@ const { data: navLinks } = await useAsyncData('builderDataNavLinks', () =>
 );
 
 links.value = navLinks.value || [];
+
+// Watch for route changes to close mobile menu
+const route = useRoute();
+watch(
+  () => route.path,
+  () => {
+    showMobileMenu.value = false;
+  },
+);
 </script>
