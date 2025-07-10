@@ -11,7 +11,7 @@ import PricingSection from "~/components/builder/PricingSection.vue";
 
 export default defineNuxtPlugin(() => {
   // Register Hero Section
-  register("HeroSection", {
+  Builder.registerComponent(HeroSection, {
     name: "Hero Section",
     inputs: [
       {
