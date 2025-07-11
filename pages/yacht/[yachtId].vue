@@ -149,19 +149,26 @@
                     </div>
                     <div v-if="yacht?.category" class="flex justify-between">
                       <span class="text-gray-600">Category:</span>
-                      <span class="font-medium">{yacht.category}</span>
+                      <span class="font-medium">{{yacht.category}}</span>
                     </div>
+                    <template v-for="category in getGroupedSpecs" :key="category.name">
+                      <div class="col-span-2">
+                        <h4 class="text-lg font-semibold text-gray-900 mt-4 mb-2">{{category.name}}</h4>
+                        <div v-for="spec in category.specs" :key="spec" class="flex justify-between">
+                          <span class="text-gray-600">{{spec.label}}</span>
+                          <span class="font-medium">{{spec.value}}</span>
+                        </div>
+                      </div>
+                    </template>
                   </div>
                 </div>
 
-                <div v-if="yacht?.dataType === 'charter' && yacht?.amenities?.length > 0">
+                <div v-if="yacht?.dataType === 'charter' && yacht?.termToysAndTender?.length > 0">
                   <Separator class="my-8" />
                   <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Amenities</h3>
                     <div class="flex flex-wrap gap-2">
-                      <!-- {yacht.amenities.map((amenity, index) => (
-                        <Badge key={index} variant="outline">{amenity}</Badge>
-                      ))} -->
+                      <Badge v-for="(amenity, index) in yacht.termToysAndTender" :key="index" variant="outline">{{amenity}}</Badge>
                     </div>
                   </div>
                 </div>
@@ -203,9 +210,9 @@
 
                 <div v-if="yacht?.broker">
                   <Separator class="my-6" />
-                  <!-- <div>
+                  <div>
                     <h4 class="font-semibold text-gray-900 mb-3">
-                      {yacht.dataType === 'sales' ? 'Listing Broker' : 'Charter Specialist'}
+                      {{yacht.dataType === 'sales' ? 'Listing Broker' : 'Charter Specialist'}}
                     </h4>
                     <div class="space-y-2">
                       <div class="font-medium">{yacht.broker.name}</div>
@@ -234,7 +241,7 @@
                         </div>
                       )}
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -261,61 +268,105 @@
 <script setup lang="ts">
 import { ArrowLeft, Share2 } from 'lucide-vue-next';
 
-  const yachtId = useRoute().params.yachtId;
-  const yacht = ref<any>({});
-  const selectedImageIndex = ref(0);
-  const pending = ref(false);
-  const route = useRoute();
+const route = useRoute();
+const yachtId = computed(() => route.params.yachtId);
+const yacht = ref<any>({});
+const selectedImageIndex = ref(0);
+const pending = ref(false);
+console.log(yachtId.value)
 
 const { data, pending: isLoading } = await useAsyncData(
-  'yachtData',
-  () => $fetch(`https://ahoy-boats-api.ahoyclub.workers.dev/api/v1/yachts/${yachtId}`),
+  () => `yacht-${yachtId.value}`,
+  () => $fetch(`https://ahoy-boats-api.ahoyclub.workers.dev/api/v1/yachts/${yachtId.value}`),
   {
     immediate: true,
-    watch: [yachtId]
+    key: yachtId.value
   }
 );
 
 watchEffect(() => {
-  if (data.value) {
+  if (data.value?.data?.yacht) {
     yacht.value = data?.value?.data?.yacht;
     pending.value = isLoading.value;
   }
 });
 
-  // const images = yacht.value?.images;
+// Format helpers
+const formatPrice = (price?: string | number) => {
+  if (!price) return 'Price on request';
+  
+  let numPrice: number;
+  if (typeof price === 'string') {
+    numPrice = Number.parseFloat(price.replace(/[^\d.]/g, ''));
+  } else {
+    numPrice = price;
+  }
+  
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: yacht.value?.currency || 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(numPrice);
+};
 
-  const formatPrice = (price?: string | number) => {
-    if (!price) return 'Price on request';
+const formatLength = (lengthMeters: string | number) => {
+  if (!lengthMeters) return 'Length not specified';
+  const meters = typeof lengthMeters === 'string' ? Number.parseFloat(lengthMeters) : lengthMeters;
+  const feet = Math.round(meters * 3.28084);
+  return `${meters}m (${feet}ft)`;
+};
+
+const getGroupedSpecs = computed(() => {
+  if (!yacht.value?.termSpecifications || !Array.isArray(yacht.value.termSpecifications)) {
+    return [];
+  }
+  
+  const grouped = yacht.value.termSpecifications.reduce((acc, spec) => {
+    if (typeof spec !== 'string') return acc;
     
-    let numPrice: number;
-    if (typeof price === 'string') {
-      numPrice = Number.parseFloat(price.replace(/[^\d.]/g, ''));
-    } else {
-      numPrice = price;
+    const parts = spec.split('::').map(s => s.trim());
+    if (parts.length !== 2) return acc;
+    
+    const [category, fullSpec] = parts;
+    
+    if (!acc[category]) {
+      acc[category] = [];
     }
     
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: yacht?.currency || 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(numPrice);
-  };
+    const words = fullSpec.split(' ');
+    let label, value;
+    
+    // Handle cases where the last two parts are number-unit pairs
+    if (words.length >= 2 && !isNaN(words[words.length - 1])) {
+      label = words.slice(0, -2).join(' ');
+      value = `${words[words.length - 2]} ${words[words.length - 1]}`;
+    } else {
+      // Default case: first word is label, rest is value
+      label = words[0];
+      value = words.slice(1).join(' ');
+    }
 
-  const formatLength = (lengthMeters: string | number) => {
-    const meters = typeof lengthMeters === 'string' ? Number.parseFloat(lengthMeters) : lengthMeters;
-    const feet = Math.round(meters * 3.28084);
-    return `${meters}m (${feet}ft)`;
-  };
+    acc[category].push({ label, value });
+    return acc;
+  }, {} as Record<string, Array<{label: string, value: string}>>);
 
+  return Object.entries(grouped).map(([name, specs]) => ({
+    name,
+    specs
+  }));
+});
+
+// Update meta tags when yacht data changes
+watchEffect(() => {
   useHead({
     title: yacht.value?.name,
     meta: [
       { name: 'description', content: yacht.value?.description },
       { name: 'og:title', content: yacht.value?.name },
       { name: 'og:description', content: yacht.value?.description },
-      { name: 'og:image', content: yacht.value?.images[0] },
+      { name: 'og:image', content: yacht.value?.images?.[0] },
     ]
-  })
+  });
+});
 </script>

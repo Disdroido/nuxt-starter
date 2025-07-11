@@ -136,106 +136,7 @@
         v-else-if="yachts.length > 0"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        <div
-          v-for="data in yachts"
-          :key="data.yacht.id"
-          class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-        >
-          <!-- Yacht Image -->
-          <div class="relative h-64 overflow-hidden">
-            <img
-              :src="
-                data.yacht.mainImage ||
-                data.yacht.images?.[0] ||
-                'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=2070&auto=format&fit=crop'
-              "
-              :alt="data.yacht.name"
-              class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-            />
-            <!-- Price Badge -->
-            <div
-              class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full"
-            >
-              <span class="text-sm font-medium text-gray-900">
-                {{ formatPrice(data.yacht.currency, data.yacht.price, data.yacht.weeklyPrice) }}
-              </span>
-            </div>
-            <!-- Charter Type -->
-            <div
-              v-if="data.yacht.type"
-              class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium"
-            >
-              {{ data.yacht.type }}
-            </div>
-          </div>
-
-          <!-- Yacht Details -->
-          <div class="p-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">
-              {{ data.yacht.name }}
-            </h3>
-            <p
-              v-if="data.yacht.flag"
-              class="text-gray-600 mb-3 flex items-center"
-            >
-              <MapPin class="w-4 h-4 mr-1" />
-              {{ data.yacht.flag }}
-            </p>
-
-            <!-- Yacht Specs -->
-            <div class="grid grid-cols-3 gap-4 mb-4 text-sm text-gray-600">
-              <div v-if="data.yacht.lengthMeters" class="text-center">
-                <div class="font-medium text-gray-900">{{ data.yacht.lengthMeters }}m</div>
-                <div>Length</div>
-              </div>
-              <div v-if="data.yacht.sleeps" class="text-center">
-                <div class="font-medium text-gray-900">{{ data.yacht.sleeps }}</div>
-                <div>Guests</div>
-              </div>
-              <div v-if="data.yacht.cabins" class="text-center">
-                <div class="font-medium text-gray-900">{{ data.yacht.cabins }}</div>
-                <div>Cabins</div>
-              </div>
-            </div>
-
-            <!-- Features -->
-            <div v-if="data.yacht?.termToysAndTender && data.yacht?.termToysAndTender?.length" class="mb-4">
-              <div class="flex flex-wrap gap-2">
-                <span
-                  v-for="(toy, index) in (data.yacht?.termToysAndTender || [])
-                    .filter(toy => toy && typeof toy === 'string')
-                    .map(toy => toy.split('::'))
-                    .filter(([first]) => first && first !== 'Tender' && first !== 'Tenders')
-                    .map(([_, second]) => second)
-                    .slice(0, 3)"
-                  :key="index"
-                  class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs"
-                >
-                  {{ toy }}
-                </span>
-              </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="flex gap-3">
-              <Button
-                asChild
-                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors"
-              >
-                <NuxtLink :to="`/yacht/${data.yacht.id}`">
-                  View Details
-                </NuxtLink>
-              </Button>
-              <!-- <Button
-                @click="$emit('inquire-yacht', data.yacht)"
-                variant="outline"
-                class="px-4 py-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                <Heart class="w-4 h-4" />
-              </Button> -->
-            </div>
-          </div>
-        </div>
+          <YachtCard v-for="yacht in yachts" :key="yacht.yacht.id" :yacht="yacht.yacht" variant="default" />
       </div>
 
       <!-- No Results -->
@@ -274,14 +175,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, watch } from "vue";
-import { Button } from "~/components/ui/button";
-import { MapPin } from "lucide-vue-next";
+import YachtCard from "~/components/builder/YachtCard.vue";
+import type { Yacht } from "~/types/yacht";
 
 // Search parameters
 const searchParams = reactive({
   page: 1,
-  limit: 20,
+  limit: 18,
   total: 0,
   dataType: "charter",
   search: "",
@@ -315,11 +215,11 @@ watch(lengthRange, (newRange) => {
 // Initialize from URL params
 const route = useRoute();
 if (route.query) {
-  Object.keys(searchParams).forEach((key) => {
+  for (const key of Object.keys(searchParams)) {
     if (route.query[key]) {
-      searchParams[key] = route.query[key];
+      (searchParams as any)[key] = route.query[key];
     }
-  });
+  };
 
   // Set length range from URL params
   if (route.query.minLength && route.query.maxLength) {
@@ -330,18 +230,18 @@ if (route.query) {
 }
 
 // Yachts data
-const yachts = ref<any>([]);
+const yachts = ref<Yacht[]>([]);
 
 // Build API URL with search parameters
 const buildApiUrl = () => {
   const baseUrl = "https://ahoy-boats-api.ahoyclub.workers.dev/api/v1/yachts";
   const params = new URLSearchParams();
 
-  Object.entries(searchParams).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(searchParams)) {
     if (value && value !== "") {
       params.set(key, value.toString());
     }
-  });
+  };
 
   return `${baseUrl}?${params.toString()}`;
 };
@@ -353,7 +253,7 @@ const {
   refresh,
 } = await useAsyncData("yachtsData", () => $fetch(buildApiUrl()), {
   immediate: true,
-  watch: false,
+  watch: [],
 });
 
 // Update yachts when data changes
@@ -363,26 +263,15 @@ watchEffect(() => {
   }
 });
 
-const formatPrice = (currency, price, weeklyPrice) => {
-  if (!price && !weeklyPrice) return "Price on request";
-  if (price !== null && typeof price === 'number') {
-    return `${currency} ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-  }
-  if (weeklyPrice && typeof weeklyPrice === 'string') {
-    return `${currency !== 'unknown' ? currency : 'AUD'} ${weeklyPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/week`;
-  }
-  return "Price on request";
-};
-
 // Update search function
 const updateSearch = async () => {
   const params = new URLSearchParams();
 
-  Object.entries(searchParams).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(searchParams)) {
     if (value && value !== "") {
       params.set(key, value.toString());
     }
-  });
+  };
 
   // Update URL
   await navigateTo(`/charter?${params.toString()}`, { replace: true });
